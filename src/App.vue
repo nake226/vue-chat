@@ -21,6 +21,7 @@
             <nl2br tag="div" :text="message"/>
           </div>
         </div>
+        <div class="item__delete" @click="deleteTweets">削除</div>
       </section>
     </transition-group>
     <!-- form -->
@@ -35,10 +36,10 @@
 // firebase
 import firebase from 'firebase'
 // 改行 -> <br>
-import NL2br from 'vue-nl2br'
+import nl2br from 'vue-nl2br'
 export default {
   name: 'App',
-  components: {NL2br},
+  components: {nl2br},
   data() {
     return {
       // ユーザ
@@ -66,7 +67,7 @@ export default {
   methods: {
     // ログイン
     login() {
-      const provider = new firebase.auth.EmailAuthProvider()
+      const provider = new firebase.auth.TwitterAuthProvider()
       firebase.auth().signInWithPopup(provider)
     },
     // ログアウト
@@ -101,29 +102,36 @@ export default {
           this.input = ''
         })
       }
+    },
+    deleteTweets() {
+      this.chat.pop();
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 * {
   margin: 0;
   box-sizing: border-box;
 }
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   background: #3ab383;
   margin-bottom: 1em;
   padding: 0.4em 0.8em;
   color: #fff;
+  button {
+    padding: 3px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 30px;
+    color: #3ab383;
+    font-weight: bold;
+  }
 }
 .content {
   margin: 0 auto;
@@ -188,6 +196,8 @@ export default {
 .button {
   &--send {
     height: 4em;
+    background: #aaa;
+    color: #fff;
   }
 }
 /* トランジション用スタイル */
